@@ -1,0 +1,16 @@
+{
+  "name": "tea-stack",
+  "description": "Lean, production-first workflow plugin for coding agents.",
+  "owner": {
+    "name": "futuretea"
+  },
+  "plugins": [
+    {
+      "name": "tea-stack",
+      "version": "0.1.0",
+      "description": "Compact baseline rules + 5 focused workflow skills (plan, debug, independent review, readiness).",
+      "source": "./",
+      "installType": "local"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "tea-stack",
+  "description": "Lean, low-token-tax production workflow plugin for coding agents.",
+  "owner": {
+    "name": "futuretea"
+  },
+  "plugins": [
+    {
+      "name": "tea-stack",
+      "version": "0.1.0",
+      "description": "Lean, low-token-tax production workflow plugin (~4 KB baseline + 5 focused skills + independent code reviewer).",
+      "source": "./"
+    }
+  ]
+}

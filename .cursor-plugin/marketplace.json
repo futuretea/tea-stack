@@ -1,0 +1,13 @@
+{
+  "name": "tea-stack",
+  "plugins": [
+    {
+      "name": "tea-stack",
+      "displayName": "tea-stack",
+      "description": "Lean, low-token-tax production workflow plugin (~4 KB rules + focused skills for planning, debugging, independent review, and PR readiness).",
+      "source": "./",
+      "author": "futuretea",
+      "category": "Developer Tools"
+    }
+  ]
+}
