@@ -1,6 +1,6 @@
 ---
 name: using-tea-stack
-description: Lightweight workflow router and core production guardrails for tea-stack. Use to pick the minimal workflow step that fits the task's risk.
+description: Use when starting a coding session or choosing a workflow step. Routes tasks to the minimal tea-stack skill proportional to risk and enforces the 5 core production guardrails.
 ---
 
 # Using tea-stack

@@ -52,7 +52,7 @@ Fixing this rarely requires heavier prompts. It requires **four engineering habi
 
 2. **Installing 100+ skills on day one**
    - *Symptom*: Trigger collisions, inconsistent behavior, and nobody remembers what exists.
-   - *Fix*: Start with these 4 core skills. Add a team skill only after the same workflow pain recurs 3+ times.
+   - *Fix*: Start with these 4 core workflow skills (plus the lightweight `using-tea-stack` router). Add a team skill only after the same workflow pain recurs 3+ times.
 
 3. **Reviewing code in the same session that wrote it**
    - *Symptom*: The model rationalizes its own decisions and misses real edge cases.
@@ -72,7 +72,7 @@ Fixing this rarely requires heavier prompts. It requires **four engineering habi
 
 Avoid rolling out across an entire org at once. Run a small two-week pilot instead:
 
-- **Week 1 (One repo, one champion)**: Pick one active repo with a working test suite. Add a lean `AGENTS.md` (<150 lines). Run 2–3 real tasks through the full loop and collect 1–2 concrete examples of bugs caught by independent review.
+- **Week 1 (One repo, one champion)**: Pick one active repo with a working test suite. Add a lean `AGENTS.md` (<150 lines, using [`templates/PROJECT-AGENTS.md`](../templates/PROJECT-AGENTS.md) and [`examples/project-agents-example.md`](../examples/project-agents-example.md)). Run 2–3 real tasks through the full loop and collect 1–2 concrete examples of bugs caught by independent review.
 - **Week 2 (2–3 teammates)**: Have 2–3 engineers use the exact same baseline on real tickets. Track:
   - Which rules actually prevented mistakes vs. which felt like noise?
   - What real `P0`/`P1` issues did independent review catch (and any false positives)?

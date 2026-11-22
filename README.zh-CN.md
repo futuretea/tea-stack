@@ -40,15 +40,15 @@ codex plugin add tea-stack@tea-stack
 *（或使用脚本软链安装：`./install.sh --target cursor`）*
 
 ### Kimi Code
-- **TUI 插件管理**：在 Kimi Code 内输入 `/plugins`，通过 `https://github.com/futuretea/tea-stack.git` 安装（读取 [`kimi.plugin.json`](./kimi.plugin.json)）。
-- **CLI Skills 目录**：直接通过 `kimi --skills-dir /path/to/tea-stack/skills` 加载，或运行 `./install.sh --target kimi` 建立一次软链。
+- **TUI 插件管理**：在 Kimi Code 内执行 `/plugins install https://github.com/futuretea/tea-stack`，安装后用 `/new` 开启新会话生效（读取 [`.kimi-plugin/plugin.json`](./.kimi-plugin/plugin.json)）。
+- **软链或 CLI Skills 目录**：运行 `./install.sh --target kimi` 建立一次软链，或用 `kimi --skills-dir /path/to/tea-stack/skills` 临时加载。注意 `--skills-dir` 会替代（而非追加）自动发现的用户与项目 Skills 目录，如果已有其他 Skill 建议优先用 `/plugins` 或 `./install.sh --target kimi`。
 
 ### 通用软链脚本（macOS / Linux — 任意 Agent）
 ```bash
 # 预览软链动作，不做任何修改
 ./install.sh --target all --dry-run
 
-# 支持目标：claude | codex | cursor | kimi | all
+# 支持目标：claude | codex | agy | cursor | kimi | all
 ./install.sh --target kimi
 
 # 或安装到任意自定义 Skills 目录
@@ -90,12 +90,15 @@ codex plugin add tea-stack@tea-stack
 | [`examples/`](./examples/) | 填好的项目 `AGENTS.md` 样例 + 证据驱动 Review 输出样例 |
 | [`docs/TEAM-PLAYBOOK.zh-CN.md`](./docs/TEAM-PLAYBOOK.zh-CN.md) | 团队落地指南、常见翻车模式与两周试点方案（[English](./docs/TEAM-PLAYBOOK.md)） |
 
-### 内置五端插件清单
-- **Claude Code**：[`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) + [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json)
-- **Antigravity (`agy`)**：[`.antigravity-plugin/plugin.json`](./.antigravity-plugin/plugin.json)
-- **Codex**：[`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json) + [`.agents/plugins/marketplace.json`](./.agents/plugins/marketplace.json)
-- **Cursor**：[`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json) + [`.cursor-plugin/marketplace.json`](./.cursor-plugin/marketplace.json)
-- **Kimi Code**：[`kimi.plugin.json`](./kimi.plugin.json)
+### 内置五端插件清单与组件支持矩阵
+
+| 宿主 | 清单 | 5 个 Skills | `code-reviewer` Agent | `rules/AGENTS.md` | 启动路由 |
+|---|---|---|---|---|---|
+| **Claude Code** | [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) + [marketplace](./.claude-plugin/marketplace.json) | 自动加载 | 自动加载（`agents/`） | 按需手动合入 | Skill description |
+| **Antigravity (`agy`)** | [`.antigravity-plugin/plugin.json`](./.antigravity-plugin/plugin.json) | 自动加载 | 自动加载（`agents/`） | 自动加载（`rules/`） | Skill description + 规则 |
+| **Codex** | [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json) + [marketplace](./.agents/plugins/marketplace.json) | 自动加载 | 新会话 / 原生子代理跑 `review-code` | 按需手动合入 | Skill description |
+| **Cursor** | [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json) + [marketplace](./.cursor-plugin/marketplace.json) | 自动加载 | 新会话 / 原生子代理跑 `review-code` | 按需手动合入 | Skill description |
+| **Kimi Code** | [`.kimi-plugin/plugin.json`](./.kimi-plugin/plugin.json) | 自动加载 | 自动加载（`agents/`） | 按需手动合入 | 自动加载（`sessionStart.skill`） |
 
 ## 在具体项目中落地
 

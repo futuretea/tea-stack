@@ -40,15 +40,15 @@ codex plugin add tea-stack@tea-stack
 *(Or symlink skills via `./install.sh --target cursor`)*
 
 ### Kimi Code
-- **TUI Plugin Manager**: run `/plugins` inside Kimi Code and install from `https://github.com/futuretea/tea-stack.git` (powered by [`kimi.plugin.json`](./kimi.plugin.json)).
-- **CLI Skills Directory**: pass `--skills-dir /path/to/tea-stack/skills`, or symlink once via `./install.sh --target kimi`.
+- **TUI Plugin Manager**: run `/plugins install https://github.com/futuretea/tea-stack` inside Kimi Code, then start a fresh session with `/new` (powered by [`.kimi-plugin/plugin.json`](./.kimi-plugin/plugin.json)).
+- **Symlink or CLI Skills Directory**: symlink once via `./install.sh --target kimi`, or load directly via `kimi --skills-dir /path/to/tea-stack/skills`. Note that `--skills-dir` replaces (rather than appends to) auto-discovered user and project skill directories, so prefer `/plugins` or `./install.sh --target kimi` if you already use other skills.
 
 ### Symlink Fallback (macOS / Linux — Any Agent)
 ```bash
 # Preview symlinks without modifying anything
 ./install.sh --target all --dry-run
 
-# Supported targets: claude | codex | cursor | kimi | all
+# Supported targets: claude | codex | agy | cursor | kimi | all
 ./install.sh --target kimi
 
 # Or install into any custom skills directory
@@ -90,12 +90,15 @@ Task / Requirement
 | [`examples/`](./examples/) | Filled-in repo `AGENTS.md` example + concrete `review-code` output example |
 | [`docs/TEAM-PLAYBOOK.md`](./docs/TEAM-PLAYBOOK.md) | Team rollout guide, anti-patterns, and 2-week pilot plan ([中文版](./docs/TEAM-PLAYBOOK.zh-CN.md)) |
 
-### Plugin Manifests Included
-- **Claude Code**: [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) + [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json)
-- **Antigravity (`agy`)**: [`.antigravity-plugin/plugin.json`](./.antigravity-plugin/plugin.json)
-- **Codex**: [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json) + [`.agents/plugins/marketplace.json`](./.agents/plugins/marketplace.json)
-- **Cursor**: [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json) + [`.cursor-plugin/marketplace.json`](./.cursor-plugin/marketplace.json)
-- **Kimi Code**: [`kimi.plugin.json`](./kimi.plugin.json)
+### Plugin Manifests & Component Support
+
+| Harness | Manifest | Skills (5) | `code-reviewer` Agent | `rules/AGENTS.md` | SessionStart Router |
+|---|---|---|---|---|---|
+| **Claude Code** | [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) + [marketplace](./.claude-plugin/marketplace.json) | Auto | Auto (`agents/`) | Manual merge | Skill description |
+| **Antigravity (`agy`)** | [`.antigravity-plugin/plugin.json`](./.antigravity-plugin/plugin.json) | Auto | Auto (`agents/`) | Auto (`rules/`) | Skill description + rules |
+| **Codex** | [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json) + [marketplace](./.agents/plugins/marketplace.json) | Auto | Use fresh session / native sub-agent | Manual merge | Skill description |
+| **Cursor** | [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json) + [marketplace](./.cursor-plugin/marketplace.json) | Auto | Use fresh session / native sub-agent | Manual merge | Skill description |
+| **Kimi Code** | [`.kimi-plugin/plugin.json`](./.kimi-plugin/plugin.json) | Auto | Auto (`agents/`) | Manual merge | Auto (`sessionStart.skill`) |
 
 ## Adopting in a Repository
 

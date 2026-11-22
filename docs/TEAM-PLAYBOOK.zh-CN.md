@@ -51,7 +51,7 @@
 
 2. **直接复制粘贴别人的全套 Skills**
    - 现象：一次性装几十上百个 Skill，触发词互相打架，团队成员根本记不住何时用哪个。
-   - 对策：从本仓库这 4 个最高频 Skill 起步；只有团队里某个痛点**真实反复出现 3 次以上**，才沉淀新的团队 Skill。
+   - 对策：从这 4 个核心工作流 Skill（加 1 个轻量路由 `using-tea-stack`）起步；只有团队里某个痛点**真实反复出现 3 次以上**，才沉淀新的团队 Skill。
 
 3. **同一会话里自写自审**
    - 现象：写完代码顺口问一句“帮我 review 一下有没有问题”，模型顺着刚生成的思路自我肯定。
@@ -72,7 +72,7 @@
 不要全组一刀切，建议按两周小闭环推进：
 
 - **第 1 周：单仓库打样**
-  - 选 1 个测试体系较健全的核心仓库，补齐精简版 `AGENTS.md`（参考 `templates/PROJECT-AGENTS.md` 与 `examples/project-agents-example.md`）。
+  - 选 1 个测试体系较健全的核心仓库，补齐精简版 `AGENTS.md`（参考 [`templates/PROJECT-AGENTS.md`](../templates/PROJECT-AGENTS.md) 与 [`examples/project-agents-example.md`](../examples/project-agents-example.md)）。
   - 由 1 位主推人用“计划 → 实现 → 独立审查 → 交付体检”跑完 2–3 个真实需求，沉淀 1–2 个真实拦截案例（例如独立 Review 拦下的 P0/P1）。
 - **第 2 周：2–3 人跟跑复盘**
   - 拉 2–3 位同学一起按同一套模板跑真实需求，重点记录：

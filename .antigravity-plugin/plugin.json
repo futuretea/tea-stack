@@ -1,10 +1,25 @@
 {
   "name": "tea-stack",
+  "displayName": "tea-stack",
   "version": "0.1.0",
+  "description": "Lean, low-token-tax production workflow plugin: compact engineering rules, one-page planning, scientific debugging, independent code review, and PR readiness checks.",
+  "category": "Developer Tools",
+  "keywords": [
+    "workflow",
+    "code-review",
+    "planning",
+    "debugging",
+    "lightweight"
+  ],
+  "suggestedPrompts": [
+    "Write a one-page implementation plan before editing across modules",
+    "Run an independent P0/P1/P2 code review on the current diff"
+  ],
   "author": {
     "name": "futuretea",
     "url": "https://github.com/futuretea"
   },
   "homepage": "https://github.com/futuretea/tea-stack",
-  "repository": "https://github.com/futuretea/tea-stack"
+  "repository": "https://github.com/futuretea/tea-stack",
+  "license": "MIT"
 }

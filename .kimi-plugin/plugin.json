@@ -1,0 +1,28 @@
+{
+  "name": "tea-stack",
+  "version": "0.1.0",
+  "description": "Lean, low-token-tax production workflow plugin: compact engineering rules, one-page planning, scientific debugging, independent code review, and PR readiness checks.",
+  "author": {
+    "name": "futuretea"
+  },
+  "homepage": "https://github.com/futuretea/tea-stack",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "code-review",
+    "planning",
+    "debugging",
+    "lightweight"
+  ],
+  "skills": "./skills/",
+  "sessionStart": {
+    "skill": "using-tea-stack"
+  },
+  "interface": {
+    "displayName": "tea-stack",
+    "shortDescription": "Lean production workflow plugin (~4 KB rules + 5 focused skills)",
+    "longDescription": "A low-token-tax starter workflow for coding agents: compact engineering guardrails, one-page planning, scientific debugging, independent evidence-based code review, and pre-PR readiness checks.",
+    "developerName": "futuretea",
+    "websiteURL": "https://github.com/futuretea/tea-stack"
+  }
+}
