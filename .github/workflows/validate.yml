@@ -1,0 +1,94 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check install.sh syntax and dry-run
+        run: |
+          bash -n install.sh
+          ./install.sh --target all --dry-run
+
+      - name: Validate manifests, budgets, frontmatter, and hygiene
+        run: |
+          node -e '
+          const fs = require("node:fs");
+          const path = require("node:path");
+
+          const manifests = [
+            ".claude-plugin/plugin.json",
+            ".claude-plugin/marketplace.json",
+            ".antigravity-plugin/plugin.json",
+            ".codex-plugin/plugin.json",
+            ".agents/plugins/marketplace.json",
+            ".cursor-plugin/plugin.json",
+            ".cursor-plugin/marketplace.json",
+            ".kimi-plugin/plugin.json",
+          ];
+          const parsed = {};
+          for (const file of manifests) {
+            parsed[file] = JSON.parse(fs.readFileSync(file, "utf8"));
+          }
+
+          const codex = parsed[".codex-plugin/plugin.json"];
+          if (!codex.hooks || typeof codex.hooks !== "object" || Object.keys(codex.hooks).length !== 0) {
+            throw new Error(".codex-plugin/plugin.json must keep empty hooks object");
+          }
+
+          const cursor = parsed[".cursor-plugin/plugin.json"];
+          if (cursor.skills !== "./skills/" || !cursor.author || typeof cursor.author.name !== "string") {
+            throw new Error(".cursor-plugin/plugin.json must keep skills=./skills/ and object author");
+          }
+
+          const kimi = parsed[".kimi-plugin/plugin.json"];
+          for (const banned of ["tools", "apps", "inject", "configFile", "config_file", "bootstrap"]) {
+            if (Object.hasOwn(kimi, banned)) {
+              throw new Error(`.kimi-plugin/plugin.json contains unsupported key: ${banned}`);
+            }
+          }
+
+          const rulesSize = fs.statSync("rules/AGENTS.md").size;
+          if (rulesSize > 5120) {
+            throw new Error(`rules/AGENTS.md exceeds 5 KB cap (${rulesSize} bytes)`);
+          }
+
+          const skillDirs = fs.readdirSync("skills", { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name);
+          if (skillDirs.length === 0) throw new Error("no skills found");
+          for (const dir of skillDirs) {
+            const file = path.join("skills", dir, "SKILL.md");
+            const stat = fs.statSync(file);
+            if (stat.size > 3600) {
+              throw new Error(`${file} exceeds 3.5 KB budget (${stat.size} bytes)`);
+            }
+            const text = fs.readFileSync(file, "utf8");
+            const fm = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+            if (!fm) throw new Error(`${file} missing YAML frontmatter`);
+            const keys = fm[1].split(/\r?\n/).filter((l) => /^[A-Za-z0-9_-]+:/.test(l)).map((l) => l.split(":")[0].trim()).sort();
+            if (JSON.stringify(keys) !== JSON.stringify(["description", "name"])) {
+              throw new Error(`${file} frontmatter keys must be [name, description], got ${JSON.stringify(keys)}`);
+            }
+          }
+
+          function walk(dir) {
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              if (entry.name === ".git") continue;
+              const full = path.join(dir, entry.name);
+              if (entry.isDirectory()) walk(full);
+              else {
+                const text = fs.readFileSync(full, "utf8");
+                if (/(?:\/Users\/|\/home\/)[A-Za-z0-9._-]+\//.test(text)) {
+                  throw new Error(`local absolute path found in ${full}`);
+                }
+              }
+            }
+          }
+          walk(".");
+          console.log(`ok: validated ${manifests.length} manifests, rules (${rulesSize}B), and ${skillDirs.length} skills`);
+          '
