@@ -1,6 +1,6 @@
 ---
 name: debug
-description: "Diagnose and fix bugs or test failures using a scientific loop: reproduce, hypothesize, isolate variables, and apply a minimal root-cause fix."
+description: "Use when diagnosing bugs, flaky behavior, or failing tests. Runs a scientific loop: reproduce, hypothesize, isolate, and apply a minimal root-cause fix."
 ---
 
 # Debug
@@ -35,7 +35,9 @@ Diagnose bugs, unexpected behavior, and failing tests systematically. **Never gu
 
 ## Handoff Format
 
+```markdown
 - **Symptom & Repro**: Exact reproduction command or trigger.
 - **Root Cause**: Verified explanation (`path:line`) plus key ruled-out hypotheses.
 - **Fix**: Concise summary of the minimal change.
 - **Verification**: Reproduction result + automated test/build output summary.
+```

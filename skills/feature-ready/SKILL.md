@@ -1,6 +1,6 @@
 ---
 name: feature-ready
-description: Run a pre-PR or pre-release readiness check covering diff hygiene, build/test/lint gates, risk surfaces, and PR summary generation.
+description: Use when preparing a branch for PR, QA, or release. Runs a readiness check covering diff hygiene, gates, risk surfaces, and a PR summary.
 ---
 
 # Feature Ready

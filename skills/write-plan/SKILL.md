@@ -1,6 +1,6 @@
 ---
 name: write-plan
-description: Draft a concise, one-page implementation plan before editing across modules, changing contracts, or tackling ambiguous tasks.
+description: Use when editing 3+ files, changing contracts, or facing ambiguous scope. Drafts a concise one-page implementation plan before coding.
 ---
 
 # Write Plan

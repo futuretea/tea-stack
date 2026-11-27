@@ -1,6 +1,6 @@
 ---
 name: review-code
-description: Perform an independent, evidence-based P0/P1/P2 code review on a diff, PR, or set of changes.
+description: Use when reviewing a diff, PR, or critical change. Performs an independent, evidence-based P0/P1/P2 code review.
 ---
 
 # Review Code
