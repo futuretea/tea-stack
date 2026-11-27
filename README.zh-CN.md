@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-一套面向 **Claude Code**、**Codex**、**Antigravity (`agy`)**、**Cursor** 和 **Kimi Code** 的**轻量、低 Token 税生产研发工作流插件**。
+一套面向 **Claude Code**、**Codex**、**Antigravity (`agy`)**、**Cursor**、**Kimi Code**、**Qoder CLI (`qodercli`)**、**GitHub Copilot CLI (`copilot`)** 和 **DeepSeek Harness (`dsh`)** 的**轻量、低 Token 税生产研发工作流插件**。
 
 如果你觉得重型 Agent 框架流程太繁琐、日常改动仪式感太重或 Token 消耗过高，`tea-stack` 只保留真正守住生产代码质量下限的最小闭环：**~4 KB 精简基线 + 5 个聚焦 Skill + 1 个只读独立审查员**，10 秒装完即可上手。
 
@@ -11,7 +11,7 @@
 - **按风险伸缩，低仪式感**：明确小改动直接做完验证；跨模块、改契约或高风险任务才启用计划与独立审查，不打断开发节奏。
 - **低 Token 税，不触发截断**：全局基线仅 ~4 KB，单个 Skill 仅 1.5–3 KB 按需加载，远离宿主规则截断红线。
 - **把“写与审隔离”做成开箱能力**：内置只读 `code-reviewer` sub-agent，让关键改动天然在独立上下文里做证据化 `P0`/`P1`/`P2` 审查。
-- **原生五端一键安装**：单个干净仓库同时原生支持 Claude Code、Codex、Antigravity、Cursor、Kimi Code，并附零副作用软链脚本兜底。
+- **多端原生适配**：单个干净仓库同时支持 Claude Code、Codex、Antigravity、Cursor、Kimi Code、Qoder CLI、GitHub Copilot CLI 和 DeepSeek Harness，并附零副作用软链脚本兜底。
 
 ## 10 秒快速安装
 
@@ -43,13 +43,35 @@ codex plugin add tea-stack@tea-stack
 - **TUI 插件管理**：在 Kimi Code 内执行 `/plugins install https://github.com/futuretea/tea-stack`，安装后用 `/new` 开启新会话生效（读取 [`.kimi-plugin/plugin.json`](./.kimi-plugin/plugin.json)）。
 - **软链或 CLI Skills 目录**：运行 `./install.sh --target kimi` 建立一次软链，或用 `kimi --skills-dir /path/to/tea-stack/skills` 临时加载。注意 `--skills-dir` 会替代（而非追加）自动发现的用户与项目 Skills 目录，如果已有其他 Skill 建议优先用 `/plugins` 或 `./install.sh --target kimi`。
 
+### Qoder CLI (`qodercli`)
+```bash
+qodercli plugins marketplace add futuretea/tea-stack
+qodercli plugins install tea-stack@tea-stack
+```
+*（或软链到 `${QODER_CONFIG_DIR:-~/.qoder}/skills`：`./install.sh --target qodercli`，也支持共享目录 `~/.agents/skills`：`./install.sh --target agents`。）*
+
+### GitHub Copilot CLI (`copilot`)
+```bash
+copilot plugin install futuretea/tea-stack
+```
+*（或软链到 `${COPILOT_HOME:-~/.copilot}/skills`：`./install.sh --target copilot`，也支持共享目录 `~/.agents/skills`：`./install.sh --target agents`。）*
+
+### DeepSeek Harness (`dsh`)
+```bash
+./install.sh --target dsh
+```
+*（将 Skills 软链到 `${DSH_HOME:-~/.dsh}/skills`，也支持共享目录 `~/.agents/skills`：`./install.sh --target agents`；全局规则可按需手动合入 `~/.dsh/AGENTS.md`。）*
+
 ### 通用软链脚本（macOS / Linux — 任意 Agent）
 ```bash
 # 预览软链动作，不做任何修改
 ./install.sh --target all --dry-run
 
-# 支持目标：claude | codex | agy | cursor | kimi | all
+# 支持目标：claude | codex | agy | cursor | kimi | qodercli | copilot | dsh | agents | all
 ./install.sh --target kimi
+
+# 共享目录（qodercli、copilot、dsh 均会自动加载；不包含在 --target all 内以避免重复发现）
+./install.sh --target agents
 
 # 或安装到任意自定义 Skills 目录
 ./install.sh --skills-dir ~/.config/agents/skills
@@ -90,7 +112,7 @@ codex plugin add tea-stack@tea-stack
 | [`examples/`](./examples/) | 填好的项目 `AGENTS.md` 样例 + 证据驱动 Review 输出样例 |
 | [`docs/TEAM-PLAYBOOK.zh-CN.md`](./docs/TEAM-PLAYBOOK.zh-CN.md) | 团队落地指南、常见翻车模式与两周试点方案（[English](./docs/TEAM-PLAYBOOK.md)） |
 
-### 内置五端插件清单与组件支持矩阵
+### 插件清单与组件支持矩阵
 
 | 宿主 | 清单 | 5 个 Skills | `code-reviewer` Agent | `rules/AGENTS.md` | 启动路由 |
 |---|---|---|---|---|---|
@@ -99,6 +121,9 @@ codex plugin add tea-stack@tea-stack
 | **Codex** | [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json) + [marketplace](./.agents/plugins/marketplace.json) | 自动加载 | 新会话 / 原生子代理跑 `review-code` | 按需手动合入 | Skill description |
 | **Cursor** | [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json) + [marketplace](./.cursor-plugin/marketplace.json) | 自动加载 | 新会话 / 原生子代理跑 `review-code` | 按需手动合入 | Skill description |
 | **Kimi Code** | [`.kimi-plugin/plugin.json`](./.kimi-plugin/plugin.json) | 自动加载 | 自动加载（`agents/`） | 按需手动合入 | 自动加载（`sessionStart.skill`） |
+| **Qoder CLI (`qodercli`)** | [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) + [marketplace](./.claude-plugin/marketplace.json) | 自动加载 | 自动加载（`agents/`） | 按需手动合入（`~/.qoder/AGENTS.md`） | Skill description |
+| **GitHub Copilot CLI (`copilot`)** | [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) + [marketplace](./.claude-plugin/marketplace.json) | 自动加载 | 自动加载（`agents/`） | 按需手动合入（`~/.copilot/copilot-instructions.md`） | Skill description |
+| **DeepSeek Harness (`dsh`)** | 软链（`./install.sh --target dsh` / `agents`） | 自动加载（`~/.dsh/skills`、`~/.agents/skills`） | 新会话 / 原生子代理跑 `review-code` | 按需手动合入（`~/.dsh/AGENTS.md`） | Skill description |
 
 ## 在具体项目中落地
 

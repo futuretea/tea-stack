@@ -1,6 +1,6 @@
 ---
 name: debug
-description: Diagnose and fix bugs or test failures using a scientific loop: reproduce, hypothesize, isolate variables, and apply a minimal root-cause fix.
+description: "Diagnose and fix bugs or test failures using a scientific loop: reproduce, hypothesize, isolate variables, and apply a minimal root-cause fix."
 ---
 
 # Debug

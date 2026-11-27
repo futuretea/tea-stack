@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-A **lightweight, low-token-tax workflow plugin** for **Claude Code**, **Codex**, **Antigravity (`agy`)**, **Cursor**, and **Kimi Code**.
+A **lightweight, low-token-tax workflow plugin** for **Claude Code**, **Codex**, **Antigravity (`agy`)**, **Cursor**, **Kimi Code**, **Qoder CLI (`qodercli`)**, **GitHub Copilot CLI (`copilot`)**, and **DeepSeek Harness (`dsh`)**.
 
 If heavyweight agent frameworks feel too rigid or burn too many tokens on routine work, `tea-stack` gives you the minimal production guardrails that actually prevent costly mistakes: **~4 KB of baseline rules, 5 focused skills, and a read-only independent code reviewer**.
 
@@ -11,7 +11,7 @@ If heavyweight agent frameworks feel too rigid or burn too many tokens on routin
 - **Low ceremony, proportional to risk**: Move straight to edits on clear small fixes; invoke structured planning and independent review only when changes cross modules or touch contracts.
 - **Low token tax, no silent truncation**: Compact rules (~4 KB) and small on-demand skills (~1.5–3 KB each) stay well below host context limits.
 - **Real independence on reviews**: Ships a dedicated read-only `code-reviewer` sub-agent so critical diffs are audited outside the authoring context.
-- **Native multi-tool packaging**: One clean repository supporting Claude Code, Codex, Antigravity, Cursor, and Kimi Code out of the box—plus a zero-magic fallback installer.
+- **Native multi-tool packaging**: One clean repository supporting Claude Code, Codex, Antigravity, Cursor, Kimi Code, Qoder CLI, GitHub Copilot CLI, and DeepSeek Harness—plus a zero-magic fallback installer.
 
 ## Install (10 Seconds)
 
@@ -43,13 +43,35 @@ codex plugin add tea-stack@tea-stack
 - **TUI Plugin Manager**: run `/plugins install https://github.com/futuretea/tea-stack` inside Kimi Code, then start a fresh session with `/new` (powered by [`.kimi-plugin/plugin.json`](./.kimi-plugin/plugin.json)).
 - **Symlink or CLI Skills Directory**: symlink once via `./install.sh --target kimi`, or load directly via `kimi --skills-dir /path/to/tea-stack/skills`. Note that `--skills-dir` replaces (rather than appends to) auto-discovered user and project skill directories, so prefer `/plugins` or `./install.sh --target kimi` if you already use other skills.
 
+### Qoder CLI (`qodercli`)
+```bash
+qodercli plugins marketplace add futuretea/tea-stack
+qodercli plugins install tea-stack@tea-stack
+```
+*(Or symlink skills into `${QODER_CONFIG_DIR:-~/.qoder}/skills` via `./install.sh --target qodercli`, or shared `~/.agents/skills` via `./install.sh --target agents`.)*
+
+### GitHub Copilot CLI (`copilot`)
+```bash
+copilot plugin install futuretea/tea-stack
+```
+*(Or symlink skills into `${COPILOT_HOME:-~/.copilot}/skills` via `./install.sh --target copilot`, or shared `~/.agents/skills` via `./install.sh --target agents`.)*
+
+### DeepSeek Harness (`dsh`)
+```bash
+./install.sh --target dsh
+```
+*(Symlinks skills into `${DSH_HOME:-~/.dsh}/skills`—or use `./install.sh --target agents` for shared `~/.agents/skills`; merge [`rules/AGENTS.md`](./rules/AGENTS.md) into `~/.dsh/AGENTS.md` as needed.)*
+
 ### Symlink Fallback (macOS / Linux — Any Agent)
 ```bash
 # Preview symlinks without modifying anything
 ./install.sh --target all --dry-run
 
-# Supported targets: claude | codex | agy | cursor | kimi | all
+# Supported targets: claude | codex | agy | cursor | kimi | qodercli | copilot | dsh | agents | all
 ./install.sh --target kimi
+
+# Shared directory (auto-discovered by qodercli, copilot, and dsh; excluded from --target all)
+./install.sh --target agents
 
 # Or install into any custom skills directory
 ./install.sh --skills-dir ~/.config/agents/skills
@@ -99,6 +121,9 @@ Task / Requirement
 | **Codex** | [`.codex-plugin/plugin.json`](./.codex-plugin/plugin.json) + [marketplace](./.agents/plugins/marketplace.json) | Auto | Use fresh session / native sub-agent | Manual merge | Skill description |
 | **Cursor** | [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json) + [marketplace](./.cursor-plugin/marketplace.json) | Auto | Use fresh session / native sub-agent | Manual merge | Skill description |
 | **Kimi Code** | [`.kimi-plugin/plugin.json`](./.kimi-plugin/plugin.json) | Auto | Auto (`agents/`) | Manual merge | Auto (`sessionStart.skill`) |
+| **Qoder CLI (`qodercli`)** | [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) + [marketplace](./.claude-plugin/marketplace.json) | Auto | Auto (`agents/`) | Manual merge (`~/.qoder/AGENTS.md`) | Skill description |
+| **GitHub Copilot CLI (`copilot`)** | [`.claude-plugin/plugin.json`](./.claude-plugin/plugin.json) + [marketplace](./.claude-plugin/marketplace.json) | Auto | Auto (`agents/`) | Manual merge (`~/.copilot/copilot-instructions.md`) | Skill description |
+| **DeepSeek Harness (`dsh`)** | Symlink (`./install.sh --target dsh` / `agents`) | Auto (`~/.dsh/skills`, `~/.agents/skills`) | Use fresh session / native sub-agent | Manual merge (`~/.dsh/AGENTS.md`) | Skill description |
 
 ## Adopting in a Repository
 

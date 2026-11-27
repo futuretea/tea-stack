@@ -70,9 +70,17 @@ jobs:
             const text = fs.readFileSync(file, "utf8");
             const fm = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
             if (!fm) throw new Error(`${file} missing YAML frontmatter`);
-            const keys = fm[1].split(/\r?\n/).filter((l) => /^[A-Za-z0-9_-]+:/.test(l)).map((l) => l.split(":")[0].trim()).sort();
+            const lines = fm[1].split(/\r?\n/).filter((l) => /^[A-Za-z0-9_-]+:/.test(l));
+            const keys = lines.map((l) => l.split(":")[0].trim()).sort();
             if (JSON.stringify(keys) !== JSON.stringify(["description", "name"])) {
               throw new Error(`${file} frontmatter keys must be [name, description], got ${JSON.stringify(keys)}`);
+            }
+            for (const line of lines) {
+              const val = line.slice(line.indexOf(":") + 1).trim();
+              const isQuoted = (val.startsWith("\"") && val.endsWith("\"")) || (val.startsWith("\x27") && val.endsWith("\x27"));
+              if (!isQuoted && /:(?:\s|$)/.test(val)) {
+                throw new Error(`${file} frontmatter value contains unquoted colon: ${line}`);
+              }
             }
           }
 

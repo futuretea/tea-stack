@@ -10,13 +10,13 @@ DRY_RUN=0
 
 usage() {
   cat <<'EOF'
-Usage: ./install.sh [--target claude|codex|agy|cursor|kimi|all | --skills-dir <dir>] [--dry-run]
+Usage: ./install.sh [--target claude|codex|agy|cursor|kimi|qodercli|copilot|dsh|agents|all | --skills-dir <dir>] [--dry-run]
 
 Install tea-stack skills by creating safe symlinks.
 Global rule files (rules/AGENTS.md) are NOT overwritten automatically; merge them manually as needed.
 
 Options:
-  --target <name>       Target tool: claude, codex, agy (or antigravity), cursor, kimi, or all
+  --target <name>       Target tool: claude, codex, agy (or antigravity), cursor, kimi, qodercli (or qoder), copilot, dsh, agents (shared ~/.agents/skills, excluded from all), or all
   --skills-dir <path>   Custom skills destination directory
   --dry-run             Show planned actions without modifying the filesystem
   -h, --help            Show this help message
@@ -71,6 +71,10 @@ else
     agy|antigravity) DEST_DIRS+=("${HOME}/.gemini/config/skills") ;;
     cursor) DEST_DIRS+=("${HOME}/.cursor/skills") ;;
     kimi)   DEST_DIRS+=("${KIMI_CODE_HOME:-${HOME}/.kimi-code}/skills") ;;
+    qodercli|qoder) DEST_DIRS+=("${QODER_CONFIG_DIR:-${HOME}/.qoder}/skills") ;;
+    copilot) DEST_DIRS+=("${COPILOT_HOME:-${HOME}/.copilot}/skills") ;;
+    dsh)    DEST_DIRS+=("${DSH_HOME:-${HOME}/.dsh}/skills") ;;
+    agents) DEST_DIRS+=("${HOME}/.agents/skills") ;;
     all)
       DEST_DIRS+=(
         "${HOME}/.claude/skills"
@@ -78,10 +82,13 @@ else
         "${HOME}/.gemini/config/skills"
         "${HOME}/.cursor/skills"
         "${KIMI_CODE_HOME:-${HOME}/.kimi-code}/skills"
+        "${QODER_CONFIG_DIR:-${HOME}/.qoder}/skills"
+        "${COPILOT_HOME:-${HOME}/.copilot}/skills"
+        "${DSH_HOME:-${HOME}/.dsh}/skills"
       )
       ;;
     *)
-      echo "Error: unsupported target '${TARGET}' (expected claude|codex|agy|cursor|kimi|all)" >&2
+      echo "Error: unsupported target '${TARGET}' (expected claude|codex|agy|cursor|kimi|qodercli|copilot|dsh|agents|all)" >&2
       exit 1
       ;;
   esac
