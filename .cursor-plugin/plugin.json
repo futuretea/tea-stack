@@ -1,7 +1,7 @@
 {
   "name": "tea-stack",
   "displayName": "tea-stack",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Lean, low-token-tax production workflow plugin: compact engineering rules, one-page planning, scientific debugging, independent code review, and PR readiness checks.",
   "author": {
     "name": "futuretea"

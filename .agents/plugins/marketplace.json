@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "tea-stack",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "description": "Compact baseline rules + 5 focused workflow skills (plan, debug, independent review, readiness).",
       "source": "./",
       "installType": "local"
